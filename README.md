@@ -13,6 +13,9 @@ Demo available at https://cedvdb.github.io/phone_form_field/
  ```dart
      PhoneFormField(
            // new attribute
+           // v.03
+           forceShowFlagDropDown: true, // Default
+           // v0.1
            showDropDownIcon: true, // Default : false
            dropDownIcon: Icons.arrow_drop_down, // Default
            dropDownIconSize: 16, // Default
@@ -49,4 +52,22 @@ Demo available at https://cedvdb.github.io/phone_form_field/
 ``` dart
  flutter_localizations: #Add this line
     sdk: flutter
+```
+
+## Validation
+
+* You can validation in any functions
+
+``` dart
+bool alertPhoneValid=false;
+String phone='';
+void setAlertPhoneEvent(PhoneNumber? phone) {
+    alertPhoneValid = PhoneNumber(
+            isoCode: phone?.isoCode ?? IsoCode.EG, nsn: phone?.nsn ?? '0')
+        .validate();
+    String countryCode = phone?.countryCode ?? '0';
+    String phoneNum = phone?.nsn ?? '0';
+    phone = "$countryCode $phoneNum";
+  }
+
 ```

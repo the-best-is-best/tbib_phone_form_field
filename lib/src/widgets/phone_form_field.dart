@@ -96,6 +96,7 @@ class PhoneFormField extends FormField<PhoneNumber> {
   final FocusNode? focusNode;
 
   // new ver
+  final bool forceShowFlagDropDown;
   final bool showDropDownIcon;
   final double dropDownIconSize;
   final IconData dropDownIcon;
@@ -155,6 +156,7 @@ class PhoneFormField extends FormField<PhoneNumber> {
     ScrollController? scrollController,
     Iterable<String>? autofillHints,
     String? restorationId,
+    this.forceShowFlagDropDown = true,
     this.showDropDownIcon = false,
     this.dropDownIconSize = 16,
     this.dropDownIcon = Icons.arrow_drop_down,
@@ -219,6 +221,7 @@ class PhoneFormField extends FormField<PhoneNumber> {
               scrollPhysics: scrollPhysics,
               restorationId: restorationId,
               enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
+              forceShowFlagDropDown: forceShowFlagDropDown,
               dropDownIconSize: dropDownIconSize,
               showDropDownIcon: showDropDownIcon,
               dropDownIcon: dropDownIcon,

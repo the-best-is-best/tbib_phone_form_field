@@ -62,6 +62,8 @@ class PhoneField extends StatefulWidget {
   final bool enableIMEPersonalizedLearning;
 
   // new ver
+  final bool forceShowFlagDropDown;
+
   final bool showDropDownIcon;
   final double dropDownIconSize;
   final IconData dropDownIcon;
@@ -113,9 +115,10 @@ class PhoneField extends StatefulWidget {
     required this.autofillHints,
     required this.restorationId,
     required this.enableIMEPersonalizedLearning,
-    this.showDropDownIcon = false,
-    this.dropDownIconSize = 16,
-    this.dropDownIcon = Icons.arrow_drop_down,
+    required this.showDropDownIcon,
+    required this.dropDownIconSize,
+    required this.dropDownIcon,
+    required this.forceShowFlagDropDown,
   }) : super(key: key);
 
   @override

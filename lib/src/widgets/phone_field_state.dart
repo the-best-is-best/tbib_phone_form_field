@@ -155,8 +155,16 @@ class PhoneFieldState extends State<PhoneField> {
     return widget.decoration.copyWith(
       hintText: null,
       errorText: widget.errorText,
-      prefix: useSuffix ? null : _getCountryCodeChip(),
-      // suffix: useSuffix ? _getCountryCodeChip() : null,
+      prefixIcon: widget.forceShowFlagDropDown
+          ? useSuffix
+              ? null
+              : _getCountryCodeChip()
+          : null,
+      suffix: !widget.forceShowFlagDropDown
+          ? useSuffix
+              ? _getCountryCodeChip()
+              : null
+          : null,
     );
   }
 
