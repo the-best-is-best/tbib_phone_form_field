@@ -103,11 +103,11 @@ class PhoneFieldState extends State<PhoneField> {
     );
   }
 
-  Widget _getCountryCodeChip() {
+  Widget _getCountryCodeChip(bool canChangeFlag) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: selectCountry,
+        onTap: canChangeFlag ? selectCountry : null,
         // material here else the click pass through empty spaces
         child: Material(
           color: Colors.transparent,
@@ -158,11 +158,11 @@ class PhoneFieldState extends State<PhoneField> {
       prefixIcon: widget.forceShowFlagDropDown
           ? useSuffix
               ? null
-              : _getCountryCodeChip()
+              : _getCountryCodeChip(widget.canChangeFLag)
           : null,
       suffix: !widget.forceShowFlagDropDown
           ? useSuffix
-              ? _getCountryCodeChip()
+              ? _getCountryCodeChip(widget.canChangeFLag)
               : null
           : null,
     );

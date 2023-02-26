@@ -1,6 +1,6 @@
 name: tbib_phone_form_field
 description: This library work with phone_form_field and localization with new attribute.
-version: 0.0.3
+version: 1.0.0
 homepage: https://github.com/the-best-is-best/tbib_phone_form_field
 
 environment:

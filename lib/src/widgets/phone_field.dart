@@ -63,6 +63,7 @@ class PhoneField extends StatefulWidget {
 
   // new ver
   final bool forceShowFlagDropDown;
+  final bool canChangeFLag;
 
   final bool showDropDownIcon;
   final double dropDownIconSize;
@@ -119,6 +120,7 @@ class PhoneField extends StatefulWidget {
     required this.dropDownIconSize,
     required this.dropDownIcon,
     required this.forceShowFlagDropDown,
+    this.canChangeFLag = true,
   }) : super(key: key);
 
   @override

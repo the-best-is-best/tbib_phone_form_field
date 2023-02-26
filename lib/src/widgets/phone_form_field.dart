@@ -100,6 +100,7 @@ class PhoneFormField extends FormField<PhoneNumber> {
   final bool showDropDownIcon;
   final double dropDownIconSize;
   final IconData dropDownIcon;
+  final bool canChangeFLag;
 
   PhoneFormField({
     Key? key,
@@ -108,6 +109,7 @@ class PhoneFormField extends FormField<PhoneNumber> {
     this.onChanged,
     this.focusNode,
     bool showFlagInInput = true,
+    this.canChangeFLag = true,
     CountrySelectorNavigator countrySelectorNavigator =
         const CountrySelectorNavigator.searchDelegate(),
     Function(PhoneNumber?)? onSaved,
@@ -179,6 +181,7 @@ class PhoneFormField extends FormField<PhoneNumber> {
             return PhoneField(
               controller: field._childController,
               showFlagInInput: showFlagInInput,
+              canChangeFLag: canChangeFLag,
               selectorNavigator: countrySelectorNavigator,
               errorText: field.getErrorText(),
               flagSize: flagSize,
