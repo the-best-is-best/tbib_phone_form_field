@@ -37,7 +37,7 @@ class PhoneField extends StatefulWidget {
   final SmartDashesType? smartDashesType;
   final SmartQuotesType? smartQuotesType;
   final bool enableSuggestions;
-  final ToolbarOptions? toolbarOptions;
+  final EditableText? toolbarOptions;
   final bool? showCursor;
   final VoidCallback? onEditingComplete;
   final ValueChanged<String>? onSubmitted;

@@ -136,7 +136,7 @@ class PhoneFormField extends FormField<PhoneNumber> {
     SmartDashesType? smartDashesType,
     SmartQuotesType? smartQuotesType,
     bool enableSuggestions = true,
-    ToolbarOptions? toolbarOptions,
+    EditableText? toolbarOptions,
     bool? showCursor,
     VoidCallback? onEditingComplete,
     ValueChanged<String>? onSubmitted,
