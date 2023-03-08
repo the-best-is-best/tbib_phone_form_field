@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tbib_phone_form_field/src/constants/patterns.dart';
 import 'package:tbib_phone_form_field/src/models/phone_field_controller.dart';
-import 'package:tbib_phone_form_field/src/widgets/country_selector/country_selector_navigator.dart';
+import 'package:tbib_phone_form_field/tbib_phone_form_field.dart';
 
 part 'phone_field_state.dart';
 
