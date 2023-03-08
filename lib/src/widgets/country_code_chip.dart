@@ -11,10 +11,6 @@ class CountryCodeChip extends StatelessWidget {
   final TextStyle textStyle;
   final EdgeInsets padding;
   final double flagSize;
-  final bool showDropDownIcon;
-  final double dropDownIconSize;
-  final IconData dropDownIcon;
-
   final TextDirection? textDirection;
 
   CountryCodeChip({
@@ -26,9 +22,6 @@ class CountryCodeChip extends StatelessWidget {
     this.padding = const EdgeInsets.all(20),
     this.flagSize = 20,
     this.textDirection,
-    this.showDropDownIcon = false,
-    this.dropDownIconSize = 16,
-    this.dropDownIcon = Icons.arrow_drop_down,
   })  : country = Country(isoCode, ''),
         super(key: key);
 
@@ -49,11 +42,6 @@ class CountryCodeChip extends StatelessWidget {
             country.displayCountryCode,
             style: textStyle,
             textDirection: textDirection,
-          ),
-        if (showDropDownIcon)
-          Icon(
-            dropDownIcon,
-            size: dropDownIconSize,
           ),
       ],
     );

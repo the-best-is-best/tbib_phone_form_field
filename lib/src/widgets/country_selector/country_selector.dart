@@ -4,7 +4,6 @@ import 'package:tbib_phone_form_field/l10n/generated/phone_field_localization.da
 import 'package:tbib_phone_form_field/l10n/generated/phone_field_localization_en.dart';
 import 'package:tbib_phone_form_field/src/helpers/localized_country_registry.dart';
 import 'package:tbib_phone_form_field/src/models/iso_code.dart';
-
 import '../../helpers/country_finder.dart';
 import '../../models/country.dart';
 import 'country_list.dart';
@@ -21,6 +20,9 @@ class CountrySelector extends StatefulWidget {
 
   /// ListView.builder scroll controller (ie: [ScrollView.controller])
   final ScrollController? scrollController;
+
+  /// The [ScrollPhysics] of the Country List
+  final ScrollPhysics? scrollPhysics;
 
   /// Determine the countries to be displayed on top of the list
   /// Check [addFavoritesSeparator] property to enable/disable adding a
@@ -41,13 +43,27 @@ class CountrySelector extends StatefulWidget {
   /// whether the search input is auto focussed
   final bool searchAutofocus;
 
+  /// The [TextStyle] of the country subtitle
   final TextStyle? subtitleStyle;
+
+  /// The [TextStyle] of the country title
   final TextStyle? titleStyle;
+
+  /// The [InputDecoration] of the Search Box
+  final InputDecoration? searchBoxDecoration;
+
+  /// The [TextStyle] of the Search Box
+  final TextStyle? searchBoxTextStyle;
+
+  /// The [Color] of the Search Icon in the Search Box
+  final Color? searchBoxIconColor;
+  final double flagSize;
 
   const CountrySelector({
     Key? key,
     required this.onCountrySelected,
     this.scrollController,
+    this.scrollPhysics,
     this.addFavoritesSeparator = true,
     this.showCountryCode = false,
     this.noResultMessage,
@@ -56,6 +72,10 @@ class CountrySelector extends StatefulWidget {
     this.searchAutofocus = kIsWeb,
     this.subtitleStyle,
     this.titleStyle,
+    this.searchBoxDecoration,
+    this.searchBoxTextStyle,
+    this.searchBoxIconColor,
+    this.flagSize = 40,
   }) : super(key: key);
 
   @override
@@ -73,7 +93,7 @@ class CountrySelectorState extends State<CountrySelector> {
         PhoneFieldLocalization.of(context) ?? PhoneFieldLocalizationEn();
     final isoCodes = widget.countries ?? IsoCode.values;
     final countryRegistry = LocalizedCountryRegistry.cached(localization);
-    final notFavoriteCountries =
+    final List<Country> notFavoriteCountries =
         countryRegistry.whereIsoIn(isoCodes, omit: widget.favoriteCountries);
     final favoriteCountries =
         countryRegistry.whereIsoIn(widget.favoriteCountries);
@@ -87,25 +107,50 @@ class CountrySelectorState extends State<CountrySelector> {
     setState(() {});
   }
 
+  onSubmitted() {
+    if (_favoriteCountryFinder.filteredCountries.isNotEmpty) {
+      widget.onCountrySelected(_favoriteCountryFinder.filteredCountries.first);
+    } else if (_countryFinder.filteredCountries.isNotEmpty) {
+      widget.onCountrySelected(_countryFinder.filteredCountries.first);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: 8),
+        Container(
+          width: 50,
+          height: 4,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
         SizedBox(
           height: 70,
           width: double.infinity,
           child: SearchBox(
             autofocus: widget.searchAutofocus,
             onChanged: _onSearch,
+            onSubmitted: onSubmitted,
+            decoration: widget.searchBoxDecoration,
+            style: widget.searchBoxTextStyle,
+            searchIconColor: widget.searchBoxIconColor,
           ),
         ),
+        const SizedBox(height: 16),
+        const Divider(height: 0, thickness: 1.2),
         Flexible(
           child: CountryList(
             favorites: _favoriteCountryFinder.filteredCountries,
             countries: _countryFinder.filteredCountries,
             showDialCode: widget.showCountryCode,
             onTap: widget.onCountrySelected,
+            flagSize: widget.flagSize,
             scrollController: widget.scrollController,
+            scrollPhysics: widget.scrollPhysics,
             noResultMessage: widget.noResultMessage,
             titleStyle: widget.titleStyle,
             subtitleStyle: widget.subtitleStyle,

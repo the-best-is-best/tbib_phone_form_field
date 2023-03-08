@@ -1,7 +1,7 @@
 import 'package:circle_flags/circle_flags.dart';
 import 'package:flutter/material.dart';
-import 'package:tbib_phone_form_field/l10n/generated/phone_field_localization.dart';
 
+import '../../../l10n/generated/phone_field_localization.dart';
 import '../../models/country.dart';
 
 class CountryList extends StatelessWidget {
@@ -10,12 +10,16 @@ class CountryList extends StatelessWidget {
 
   /// List of countries to display
   final List<Country> countries;
+  final double flagSize;
 
   /// list of favorite countries to display at the top
   final List<Country> favorites;
 
   /// proxy to the ListView.builder controller (ie: [ScrollView.controller])
   final ScrollController? scrollController;
+
+  /// The [ScrollPhysics] of the Country List
+  final ScrollPhysics? scrollPhysics;
 
   /// whether the country dialcode should be displayed as the [ListTile.subtitle]
   final bool showDialCode;
@@ -34,7 +38,9 @@ class CountryList extends StatelessWidget {
     required this.onTap,
     required this.noResultMessage,
     this.scrollController,
+    this.scrollPhysics,
     this.showDialCode = true,
+    this.flagSize = 40,
     this.subtitleStyle,
     this.titleStyle,
   }) : super(key: key) {
@@ -58,8 +64,8 @@ class CountryList extends StatelessWidget {
       );
     }
     return ListView.builder(
+      physics: scrollPhysics,
       controller: scrollController,
-      shrinkWrap: true,
       itemCount: _allListElement.length,
       itemBuilder: (BuildContext context, int index) {
         final country = _allListElement[index];
@@ -71,7 +77,7 @@ class CountryList extends StatelessWidget {
           key: ValueKey(country.isoCode.name),
           leading: CircleFlag(
             country.isoCode.name,
-            size: showDialCode ? null : 40,
+            size: flagSize,
           ),
           title: Align(
             alignment: AlignmentDirectional.centerStart,

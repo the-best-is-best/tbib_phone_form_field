@@ -1,17 +1,17 @@
 import 'dart:async';
+import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tbib_phone_form_field/src/constants/constants.dart';
-import 'package:tbib_phone_form_field/src/helpers/validator_translator.dart';
-import 'package:tbib_phone_form_field/src/models/phone_field_controller.dart';
-import 'package:tbib_phone_form_field/src/models/phone_controller.dart';
-import 'package:tbib_phone_form_field/src/validator/phone_validator.dart';
-import 'package:tbib_phone_form_field/src/widgets/phone_field.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 
+import '../constants/patterns.dart';
+import '../helpers/validator_translator.dart';
+import '../models/phone_controller.dart';
+import '../models/phone_field_controller.dart';
+import '../validator/phone_validator.dart';
 import 'country_selector/country_selector_navigator.dart';
-import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
+import 'phone_field.dart';
 
 part 'phone_form_field_state.dart';
 
@@ -95,13 +95,6 @@ class PhoneFormField extends FormField<PhoneNumber> {
   /// the focusNode of the national number
   final FocusNode? focusNode;
 
-  // new ver
-  final bool forceShowFlagDropDown;
-  final bool showDropDownIcon;
-  final double dropDownIconSize;
-  final IconData dropDownIcon;
-  final bool canChangeFLag;
-
   PhoneFormField({
     Key? key,
     this.controller,
@@ -109,7 +102,6 @@ class PhoneFormField extends FormField<PhoneNumber> {
     this.onChanged,
     this.focusNode,
     bool showFlagInInput = true,
-    this.canChangeFLag = true,
     CountrySelectorNavigator countrySelectorNavigator =
         const CountrySelectorNavigator.searchDelegate(),
     Function(PhoneNumber?)? onSaved,
@@ -120,6 +112,8 @@ class PhoneFormField extends FormField<PhoneNumber> {
     PhoneNumber? initialValue,
     double flagSize = 16,
     PhoneNumberInputValidator? validator,
+    bool isCountrySelectionEnabled = true,
+    bool isCountryChipPersistent = false,
     // textfield inputs
     TextInputType keyboardType = TextInputType.phone,
     TextInputAction? textInputAction,
@@ -128,7 +122,6 @@ class PhoneFormField extends FormField<PhoneNumber> {
     StrutStyle? strutStyle,
     TextAlign textAlign = TextAlign.start,
     TextAlignVertical? textAlignVertical,
-    TextDirection? textDirection,
     bool autofocus = false,
     String obscuringCharacter = '*',
     bool obscureText = false,
@@ -136,7 +129,7 @@ class PhoneFormField extends FormField<PhoneNumber> {
     SmartDashesType? smartDashesType,
     SmartQuotesType? smartQuotesType,
     bool enableSuggestions = true,
-    EditableText? toolbarOptions,
+    Widget Function(BuildContext, EditableTextState)? contextMenuBuilder,
     bool? showCursor,
     VoidCallback? onEditingComplete,
     ValueChanged<String>? onSubmitted,
@@ -158,10 +151,6 @@ class PhoneFormField extends FormField<PhoneNumber> {
     ScrollController? scrollController,
     Iterable<String>? autofillHints,
     String? restorationId,
-    this.forceShowFlagDropDown = true,
-    this.showDropDownIcon = false,
-    this.dropDownIconSize = 16,
-    this.dropDownIcon = Icons.arrow_drop_down,
     bool enableIMEPersonalizedLearning = true,
   })  : assert(
           initialValue == null || controller == null,
@@ -181,12 +170,13 @@ class PhoneFormField extends FormField<PhoneNumber> {
             return PhoneField(
               controller: field._childController,
               showFlagInInput: showFlagInInput,
-              canChangeFLag: canChangeFLag,
               selectorNavigator: countrySelectorNavigator,
               errorText: field.getErrorText(),
               flagSize: flagSize,
               decoration: decoration,
               enabled: enabled,
+              isCountrySelectionEnabled: isCountrySelectionEnabled,
+              isCountryChipPersistent: isCountryChipPersistent,
               // textfield params
               autofillHints: autofillHints,
               keyboardType: keyboardType,
@@ -196,7 +186,6 @@ class PhoneFormField extends FormField<PhoneNumber> {
               strutStyle: strutStyle,
               textAlign: textAlign,
               textAlignVertical: textAlignVertical,
-              textDirection: textDirection,
               autofocus: autofocus,
               obscuringCharacter: obscuringCharacter,
               obscureText: obscureText,
@@ -204,7 +193,7 @@ class PhoneFormField extends FormField<PhoneNumber> {
               smartDashesType: smartDashesType,
               smartQuotesType: smartQuotesType,
               enableSuggestions: enableSuggestions,
-              toolbarOptions: toolbarOptions,
+              contextMenuBuilder: contextMenuBuilder,
               showCursor: showCursor,
               onEditingComplete: onEditingComplete,
               onSubmitted: onSubmitted,
@@ -224,10 +213,7 @@ class PhoneFormField extends FormField<PhoneNumber> {
               scrollPhysics: scrollPhysics,
               restorationId: restorationId,
               enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
-              forceShowFlagDropDown: forceShowFlagDropDown,
-              dropDownIconSize: dropDownIconSize,
-              showDropDownIcon: showDropDownIcon,
-              dropDownIcon: dropDownIcon,
+              inputFormatters: inputFormatters,
             );
           },
         );

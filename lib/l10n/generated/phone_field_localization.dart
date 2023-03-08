@@ -10,7 +10,6 @@ import 'phone_field_localization_de.dart';
 import 'phone_field_localization_el.dart';
 import 'phone_field_localization_en.dart';
 import 'phone_field_localization_es.dart';
-import 'phone_field_localization_fa.dart';
 import 'phone_field_localization_fr.dart';
 import 'phone_field_localization_hi.dart';
 import 'phone_field_localization_it.dart';
@@ -19,16 +18,17 @@ import 'phone_field_localization_pt.dart';
 import 'phone_field_localization_ru.dart';
 import 'phone_field_localization_sv.dart';
 import 'phone_field_localization_tr.dart';
+import 'phone_field_localization_uk.dart';
 import 'phone_field_localization_zh.dart';
 
-/// Callers can lookup localized strings with an instance of PhoneFieldLocalization returned
-/// by `PhoneFieldLocalization.of(context)`.
+/// Callers can lookup localized strings with an instance of PhoneFieldLocalization
+/// returned by `PhoneFieldLocalization.of(context)`.
 ///
 /// Applications need to include `PhoneFieldLocalization.delegate()` in their app's
-/// localizationDelegates list, and the locales they support in the app's
-/// supportedLocales list. For example:
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
 ///
-/// ```
+/// ```dart
 /// import 'generated/phone_field_localization.dart';
 ///
 /// return MaterialApp(
@@ -43,14 +43,14 @@ import 'phone_field_localization_zh.dart';
 /// Please make sure to update your pubspec.yaml to include the following
 /// packages:
 ///
-/// ```
+/// ```yaml
 /// dependencies:
 ///   # Internationalization support.
 ///   flutter_localizations:
 ///     sdk: flutter
 ///   intl: any # Use the pinned version from flutter_localizations
 ///
-///   # rest of dependencies
+///   # Rest of dependencies
 /// ```
 ///
 /// ## iOS Applications
@@ -111,7 +111,6 @@ abstract class PhoneFieldLocalization {
     Locale('el'),
     Locale('en'),
     Locale('es'),
-    Locale('fa'),
     Locale('fr'),
     Locale('hi'),
     Locale('it'),
@@ -120,6 +119,7 @@ abstract class PhoneFieldLocalization {
     Locale('ru'),
     Locale('sv'),
     Locale('tr'),
+    Locale('uk'),
     Locale('zh')
   ];
 
@@ -1635,7 +1635,6 @@ class _PhoneFieldLocalizationDelegate
         'el',
         'en',
         'es',
-        'fa',
         'fr',
         'hi',
         'it',
@@ -1644,6 +1643,7 @@ class _PhoneFieldLocalizationDelegate
         'ru',
         'sv',
         'tr',
+        'uk',
         'zh'
       ].contains(locale.languageCode);
 
@@ -1664,8 +1664,6 @@ PhoneFieldLocalization lookupPhoneFieldLocalization(Locale locale) {
       return PhoneFieldLocalizationEn();
     case 'es':
       return PhoneFieldLocalizationEs();
-    case 'fa':
-      return PhoneFieldLocalizationFa();
     case 'fr':
       return PhoneFieldLocalizationFr();
     case 'hi':
@@ -1682,6 +1680,8 @@ PhoneFieldLocalization lookupPhoneFieldLocalization(Locale locale) {
       return PhoneFieldLocalizationSv();
     case 'tr':
       return PhoneFieldLocalizationTr();
+    case 'uk':
+      return PhoneFieldLocalizationUk();
     case 'zh':
       return PhoneFieldLocalizationZh();
   }

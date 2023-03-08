@@ -53,9 +53,6 @@ class PhoneFieldView extends StatelessWidget {
       child: Directionality(
         textDirection: useRtl ? TextDirection.rtl : TextDirection.ltr,
         child: PhoneFormField(
-          showDropDownIcon: true,
-          dropDownIcon: Icons.arrow_drop_down,
-          dropDownIconSize: 16,
           key: inputKey,
           // controller: controller,
           shouldFormat: shouldFormat,

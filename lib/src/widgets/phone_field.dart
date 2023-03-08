@@ -2,9 +2,9 @@ import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tbib_phone_form_field/src/constants/constants.dart';
+import 'package:tbib_phone_form_field/src/constants/patterns.dart';
 import 'package:tbib_phone_form_field/src/models/phone_field_controller.dart';
-import '../../tbib_phone_form_field.dart';
+import 'package:tbib_phone_form_field/src/widgets/country_selector/country_selector_navigator.dart';
 
 part 'phone_field_state.dart';
 
@@ -17,6 +17,8 @@ class PhoneField extends StatefulWidget {
   final String? errorText;
   final double flagSize;
   final InputDecoration decoration;
+  final bool isCountrySelectionEnabled;
+  final bool isCountryChipPersistent;
 
   /// configures the way the country picker selector is shown
   final CountrySelectorNavigator selectorNavigator;
@@ -29,7 +31,6 @@ class PhoneField extends StatefulWidget {
   final StrutStyle? strutStyle;
   final TextAlign textAlign;
   final TextAlignVertical? textAlignVertical;
-  final TextDirection? textDirection;
   final bool autofocus;
   final String obscuringCharacter;
   final bool obscureText;
@@ -37,7 +38,7 @@ class PhoneField extends StatefulWidget {
   final SmartDashesType? smartDashesType;
   final SmartQuotesType? smartQuotesType;
   final bool enableSuggestions;
-  final EditableText? toolbarOptions;
+  final Widget Function(BuildContext, EditableTextState)? contextMenuBuilder;
   final bool? showCursor;
   final VoidCallback? onEditingComplete;
   final ValueChanged<String>? onSubmitted;
@@ -60,14 +61,7 @@ class PhoneField extends StatefulWidget {
   final Iterable<String>? autofillHints;
   final String? restorationId;
   final bool enableIMEPersonalizedLearning;
-
-  // new ver
-  final bool forceShowFlagDropDown;
-  final bool canChangeFLag;
-
-  final bool showDropDownIcon;
-  final double dropDownIconSize;
-  final IconData dropDownIcon;
+  final List<TextInputFormatter>? inputFormatters;
 
   const PhoneField({
     // form field params
@@ -78,6 +72,8 @@ class PhoneField extends StatefulWidget {
     required this.flagSize,
     required this.errorText,
     required this.decoration,
+    required this.isCountrySelectionEnabled,
+    required this.isCountryChipPersistent,
     // textfield  inputs
     required this.keyboardType,
     required this.textInputAction,
@@ -86,7 +82,6 @@ class PhoneField extends StatefulWidget {
     required this.strutStyle,
     required this.textAlign,
     required this.textAlignVertical,
-    required this.textDirection,
     required this.autofocus,
     required this.obscuringCharacter,
     required this.obscureText,
@@ -94,7 +89,7 @@ class PhoneField extends StatefulWidget {
     required this.smartDashesType,
     required this.smartQuotesType,
     required this.enableSuggestions,
-    required this.toolbarOptions,
+    required this.contextMenuBuilder,
     required this.showCursor,
     required this.onEditingComplete,
     required this.onSubmitted,
@@ -116,11 +111,7 @@ class PhoneField extends StatefulWidget {
     required this.autofillHints,
     required this.restorationId,
     required this.enableIMEPersonalizedLearning,
-    required this.showDropDownIcon,
-    required this.dropDownIconSize,
-    required this.dropDownIcon,
-    required this.forceShowFlagDropDown,
-    this.canChangeFLag = true,
+    required this.inputFormatters,
   }) : super(key: key);
 
   @override

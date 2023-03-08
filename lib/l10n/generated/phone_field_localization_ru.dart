@@ -702,7 +702,7 @@ class PhoneFieldLocalizationRu extends PhoneFieldLocalization {
   String get ug_ => 'Уганда';
 
   @override
-  String get us_ => 'Соединенные Штаты';
+  String get us_ => 'Соединенные Штаты Америки';
 
   @override
   String get uy_ => 'Уругвай';

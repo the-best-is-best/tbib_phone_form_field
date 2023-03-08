@@ -22,6 +22,9 @@ class PhoneFieldState extends State<PhoneField> {
   }
 
   void selectCountry() async {
+    if (!widget.isCountrySelectionEnabled) {
+      return;
+    }
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     final selected = await widget.selectorNavigator.navigate(context);
     if (selected != null) {
@@ -45,57 +48,55 @@ class PhoneFieldState extends State<PhoneField> {
           // absorb pointer when the country chip is not shown, else flutter
           // still allows the country chip to be clicked even though it is not shown
           absorbing: _isEffectivelyEmpty() && !controller.focusNode.hasFocus,
-          child: Directionality(
-            textDirection: widget.textDirection ?? Directionality.of(context),
-            child: InputDecorator(
-              decoration: _getOutterInputDecoration(),
-              isFocused: controller.focusNode.hasFocus,
-              isEmpty: _isEffectivelyEmpty(),
-              child: TextField(
-                focusNode: controller.focusNode,
-                controller: controller.nationalNumberController,
-                enabled: widget.enabled,
-                decoration: _getInnerInputDecoration(),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(
-                      '[${Constants.plus}${Constants.digits}${Constants.punctuation}]')),
-                ],
-                autofillHints: widget.autofillHints,
-                keyboardType: widget.keyboardType,
-                textInputAction: widget.textInputAction,
-                style: widget.style,
-                strutStyle: widget.strutStyle,
-                textAlign: widget.textAlign,
-                textAlignVertical: widget.textAlignVertical,
-                autofocus: widget.autofocus,
-                obscuringCharacter: widget.obscuringCharacter,
-                obscureText: widget.obscureText,
-                autocorrect: widget.autocorrect,
-                smartDashesType: widget.smartDashesType,
-                smartQuotesType: widget.smartQuotesType,
-                enableSuggestions: widget.enableSuggestions,
-                toolbarOptions: widget.toolbarOptions,
-                showCursor: widget.showCursor,
-                onEditingComplete: widget.onEditingComplete,
-                onSubmitted: widget.onSubmitted,
-                onAppPrivateCommand: widget.onAppPrivateCommand,
-                cursorWidth: widget.cursorWidth,
-                cursorHeight: widget.cursorHeight,
-                cursorRadius: widget.cursorRadius,
-                cursorColor: widget.cursorColor,
-                selectionHeightStyle: widget.selectionHeightStyle,
-                selectionWidthStyle: widget.selectionWidthStyle,
-                keyboardAppearance: widget.keyboardAppearance,
-                scrollPadding: widget.scrollPadding,
-                enableInteractiveSelection: widget.enableInteractiveSelection,
-                selectionControls: widget.selectionControls,
-                mouseCursor: widget.mouseCursor,
-                scrollController: widget.scrollController,
-                scrollPhysics: widget.scrollPhysics,
-                restorationId: widget.restorationId,
-                enableIMEPersonalizedLearning:
-                    widget.enableIMEPersonalizedLearning,
-              ),
+          child: InputDecorator(
+            decoration: _getOutterInputDecoration(),
+            isFocused: controller.focusNode.hasFocus,
+            isEmpty: _isEffectivelyEmpty(),
+            child: TextField(
+              focusNode: controller.focusNode,
+              controller: controller.nationalNumberController,
+              enabled: widget.enabled,
+              decoration: _getInnerInputDecoration(),
+              inputFormatters: widget.inputFormatters ??
+                  [
+                    FilteringTextInputFormatter.allow(RegExp(
+                        '[${Patterns.plus}${Patterns.digits}${Patterns.punctuation}]')),
+                  ],
+              autofillHints: widget.autofillHints,
+              keyboardType: widget.keyboardType,
+              textInputAction: widget.textInputAction,
+              style: widget.style,
+              strutStyle: widget.strutStyle,
+              textAlign: widget.textAlign,
+              textAlignVertical: widget.textAlignVertical,
+              autofocus: widget.autofocus,
+              obscuringCharacter: widget.obscuringCharacter,
+              obscureText: widget.obscureText,
+              autocorrect: widget.autocorrect,
+              smartDashesType: widget.smartDashesType,
+              smartQuotesType: widget.smartQuotesType,
+              enableSuggestions: widget.enableSuggestions,
+              contextMenuBuilder: widget.contextMenuBuilder,
+              showCursor: widget.showCursor,
+              onEditingComplete: widget.onEditingComplete,
+              onSubmitted: widget.onSubmitted,
+              onAppPrivateCommand: widget.onAppPrivateCommand,
+              cursorWidth: widget.cursorWidth,
+              cursorHeight: widget.cursorHeight,
+              cursorRadius: widget.cursorRadius,
+              cursorColor: widget.cursorColor,
+              selectionHeightStyle: widget.selectionHeightStyle,
+              selectionWidthStyle: widget.selectionWidthStyle,
+              keyboardAppearance: widget.keyboardAppearance,
+              scrollPadding: widget.scrollPadding,
+              enableInteractiveSelection: widget.enableInteractiveSelection,
+              selectionControls: widget.selectionControls,
+              mouseCursor: widget.mouseCursor,
+              scrollController: widget.scrollController,
+              scrollPhysics: widget.scrollPhysics,
+              restorationId: widget.restorationId,
+              enableIMEPersonalizedLearning:
+                  widget.enableIMEPersonalizedLearning,
             ),
           ),
         ),
@@ -103,31 +104,30 @@ class PhoneFieldState extends State<PhoneField> {
     );
   }
 
-  Widget _getCountryCodeChip(bool canChangeFlag) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: canChangeFlag ? selectCountry : null,
-        // material here else the click pass through empty spaces
-        child: Material(
-          color: Colors.transparent,
-          child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
-            child: CountryCodeChip(
-              key: const ValueKey('country-code-chip'),
-              isoCode: controller.isoCode,
-              showFlag: widget.showFlagInInput,
-              textStyle: widget.countryCodeStyle ??
-                  widget.decoration.labelStyle ??
-                  TextStyle(
-                    fontSize: 16,
-                    color: Theme.of(context).textTheme.caption?.color,
-                  ),
-              flagSize: widget.flagSize,
-              textDirection: widget.textDirection,
-              dropDownIconSize: widget.dropDownIconSize,
-              showDropDownIcon: widget.showDropDownIcon,
-              dropDownIcon: widget.dropDownIcon,
+  Widget _getCountryCodeChip() {
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: selectCountry,
+          // material here else the click pass through empty spaces
+          child: Material(
+            color: Colors.transparent,
+            child: Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
+              child: CountryCodeChip(
+                key: const ValueKey('country-code-chip'),
+                isoCode: controller.isoCode,
+                showFlag: widget.showFlagInInput,
+                textStyle: widget.countryCodeStyle ??
+                    widget.decoration.labelStyle ??
+                    TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).textTheme.bodySmall?.color,
+                    ),
+                flagSize: widget.flagSize,
+              ),
             ),
           ),
         ),
@@ -149,26 +149,20 @@ class PhoneFieldState extends State<PhoneField> {
   }
 
   InputDecoration _getOutterInputDecoration() {
-    final useSuffix = widget.textDirection == TextDirection.rtl &&
-        widget.textDirection == null &&
-        Directionality.of(context) == TextDirection.rtl;
+    final directionality = Directionality.of(context);
+
     return widget.decoration.copyWith(
       hintText: null,
       errorText: widget.errorText,
-      prefixIcon: widget.forceShowFlagDropDown
-          ? useSuffix
-              ? null
-              : _getCountryCodeChip(widget.canChangeFLag)
-          : null,
-      suffix: !widget.forceShowFlagDropDown
-          ? useSuffix
-              ? _getCountryCodeChip(widget.canChangeFLag)
-              : null
-          : null,
+      prefix:
+          directionality == TextDirection.ltr ? _getCountryCodeChip() : null,
+      suffix:
+          directionality == TextDirection.rtl ? _getCountryCodeChip() : null,
     );
   }
 
   bool _isEffectivelyEmpty() {
+    if (widget.isCountryChipPersistent) return false;
     final outterDecoration = _getOutterInputDecoration();
     // when there is not label and an hint text we need to have
     // isEmpty false so the country code is displayed along the

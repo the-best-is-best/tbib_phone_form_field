@@ -1,4 +1,4 @@
-import 'package:tbib_phone_form_field/tbib_phone_form_field.dart';
+import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 
 typedef PhoneNumberInputValidator = String? Function(PhoneNumber? phoneNumber);
 
@@ -51,7 +51,7 @@ class PhoneValidator {
     return (PhoneNumber? valueCandidate) {
       if (valueCandidate != null &&
           (!allowEmpty || valueCandidate.nsn.isNotEmpty) &&
-          !valueCandidate.validate()) {
+          !valueCandidate.isValid()) {
         return errorText ?? 'invalidPhoneNumber';
       }
       return null;
@@ -62,7 +62,6 @@ class PhoneValidator {
   static PhoneNumberInputValidator invalidType(
     /// expected phonetype
     PhoneNumberType expectedType, {
-
     /// custom error message
     String? errorText,
 
@@ -78,7 +77,6 @@ class PhoneValidator {
   static PhoneNumberInputValidator validType(
     /// expected phonetype
     PhoneNumberType expectedType, {
-
     /// custom error message
     String? errorText,
 
@@ -91,7 +89,7 @@ class PhoneValidator {
     return (PhoneNumber? valueCandidate) {
       if (valueCandidate != null &&
           (!allowEmpty || valueCandidate.nsn.isNotEmpty) &&
-          !valueCandidate.validate(type: expectedType)) {
+          !valueCandidate.isValid(type: expectedType)) {
         return errorText ?? defaultMessage;
       }
       return null;
@@ -155,7 +153,6 @@ class PhoneValidator {
   static invalidCountry(
     /// list of valid country isocode
     List<IsoCode> expectedCountries, {
-
     /// custom error message
     String? errorText,
 
@@ -171,7 +168,6 @@ class PhoneValidator {
   static PhoneNumberInputValidator validCountry(
     /// list of valid country isocode
     List<IsoCode> expectedCountries, {
-
     /// custom error message
     String? errorText,
 

@@ -24,6 +24,9 @@ class CountrySelectorSearchDelegate extends SearchDelegate<Country> {
   /// ListView.builder scroll controller (ie: [ScrollView.controller])
   final ScrollController? scrollController;
 
+  /// The [ScrollPhysics] of the Country List
+  final ScrollPhysics? scrollPhysics;
+
   /// Determine the countries to be displayed on top of the list
   /// Check [addFavoritesSeparator] property to enable/disable adding a
   /// list divider between favorites and others defaults countries
@@ -42,19 +45,30 @@ class CountrySelectorSearchDelegate extends SearchDelegate<Country> {
 
   /// whether the search input is auto focussed
   final bool searchAutofocus;
+  final double flagSize;
 
   LocalizedCountryRegistry? _localizedCountryRegistry;
+
+  /// Override default title TextStyle
+  final TextStyle? titleStyle;
+
+  /// Override default subtitle TextStyle
+  final TextStyle? subtitleStyle;
 
   CountrySelectorSearchDelegate({
     Key? key,
     required this.onCountrySelected,
     this.scrollController,
+    this.scrollPhysics,
     this.addFavoritesSeparator = true,
     this.showCountryCode = false,
     this.noResultMessage,
     List<IsoCode> favoriteCountries = const [],
     List<IsoCode>? countries,
     this.searchAutofocus = kIsWeb,
+    this.flagSize = 40,
+    this.titleStyle,
+    this.subtitleStyle,
   })  : countriesIso = countries ?? IsoCode.values,
         favoriteCountriesIso = favoriteCountries;
 
@@ -77,8 +91,10 @@ class CountrySelectorSearchDelegate extends SearchDelegate<Country> {
       return;
     }
     _localizedCountryRegistry = countryRegistry;
-    final notFavoriteCountries =
-        countryRegistry.whereIsoIn(countriesIso, omit: favoriteCountriesIso);
+    final notFavoriteCountries = countryRegistry.whereIsoIn(
+      countriesIso,
+      omit: favoriteCountriesIso,
+    );
     final favoriteCountries = countryRegistry.whereIsoIn(favoriteCountriesIso);
     _countryFinder = CountryFinder(notFavoriteCountries);
     _favoriteCountryFinder = CountryFinder(favoriteCountries, sort: false);
@@ -106,8 +122,12 @@ class CountrySelectorSearchDelegate extends SearchDelegate<Country> {
       countries: _countryFinder.filteredCountries,
       showDialCode: showCountryCode,
       onTap: onCountrySelected,
+      flagSize: flagSize,
       scrollController: scrollController,
+      scrollPhysics: scrollPhysics,
       noResultMessage: noResultMessage,
+      titleStyle: titleStyle,
+      subtitleStyle: subtitleStyle,
     );
   }
 

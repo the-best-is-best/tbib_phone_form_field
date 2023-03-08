@@ -18,7 +18,7 @@ class PhoneFieldLocalizationTr extends PhoneFieldLocalization {
       'Geçersiz sabit hat telefon numarası';
 
   @override
-  String get requiredPhoneNumber => 'Gerekli telefon Numarası';
+  String get requiredPhoneNumber => 'Telefon numarası gerekli';
 
   @override
   String get noResultMessage => 'Sonuç yok';
